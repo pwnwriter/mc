@@ -1,0 +1,26 @@
+name: Nix build
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Build with Nix DevShell
+        run: |
+          nix develop --command bash -c '
+            bun install
+            bun run build
+          '
