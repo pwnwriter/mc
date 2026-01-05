@@ -1,0 +1,61 @@
+---
+// Editor component - CodeMirror container
+---
+
+<div id="editor-container"></div>
+
+<script>
+  import { initEditor } from '../scripts/editor';
+
+  const container = document.getElementById('editor-container');
+  if (container) {
+    initEditor(container);
+  }
+</script>
+
+<style>
+  #editor-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #editor-container :global(.cm-editor) {
+    height: 100%;
+    font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  #editor-container :global(.cm-scroller) {
+    overflow: auto;
+    padding: 1rem;
+  }
+
+  #editor-container :global(.cm-gutters) {
+    padding-right: 0.5rem;
+  }
+
+  #editor-container :global(.cm-lineNumbers .cm-gutterElement) {
+    padding: 0 0.5rem;
+    min-width: 2.5rem;
+    text-align: right;
+  }
+
+  #editor-container :global(.cm-focused) {
+    outline: none;
+  }
+
+  /* Vim mode cursor styles */
+  #editor-container :global(.cm-vim-panel) {
+    padding: 0.25rem 0.5rem;
+    font-size: 12px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+  }
+
+  #editor-container :global(.cm-fat-cursor) {
+    background-color: var(--accent) !important;
+    opacity: 0.7;
+  }
+</style>

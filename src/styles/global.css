@@ -1,0 +1,310 @@
+/* CSS Variables - defaults to dark theme */
+:root {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --text-primary: #c9d1d9;
+  --text-secondary: #8b949e;
+  --accent: #58a6ff;
+  --border: #30363d;
+
+  --header-height: 48px;
+  --settings-width: 320px;
+  --transition-speed: 0.2s;
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* App Layout */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding: 0 1rem;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.logo-tagline {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.settings-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+
+.settings-button:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+  background-color: var(--bg-primary);
+}
+
+/* Editor Wrapper */
+.editor-wrapper {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Settings Panel */
+.settings-panel {
+  position: fixed;
+  top: var(--header-height);
+  right: 0;
+  width: var(--settings-width);
+  height: calc(100vh - var(--header-height));
+  background-color: var(--bg-secondary);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform var(--transition-speed) ease;
+}
+
+.settings-panel.hidden {
+  transform: translateX(100%);
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-header h2 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.close-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+
+.close-button:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+
+.settings-content {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.setting-group {
+  margin-bottom: 1.5rem;
+}
+
+.setting-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.setting-group select {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color var(--transition-speed);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+}
+
+.setting-group select:hover,
+.setting-group select:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.setting-group select optgroup {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.setting-group select option {
+  padding: 0.5rem;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Toggle Button */
+.toggle-label {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.toggle-label span:first-child {
+  font-size: 0.875rem;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-primary);
+}
+
+.toggle-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.toggle-track {
+  display: block;
+  width: 44px;
+  height: 24px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  position: relative;
+  transition: all var(--transition-speed);
+}
+
+.toggle-thumb {
+  display: block;
+  width: 18px;
+  height: 18px;
+  background-color: var(--text-secondary);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all var(--transition-speed);
+}
+
+.toggle-button.active .toggle-track {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.toggle-button.active .toggle-thumb {
+  transform: translateX(20px);
+  background-color: var(--bg-primary);
+}
+
+/* Settings Footer */
+.settings-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .settings-panel {
+    width: 100%;
+  }
+
+  .logo-tagline {
+    display: none;
+  }
+}
