@@ -262,17 +262,12 @@ export function updateStatuslineMode(mode: string): void {
   if (!modeEl) return;
 
   // Remove all mode classes
-  modeEl.classList.remove('mode-normal', 'mode-insert', 'mode-visual', 'mode-replace', 'mode-command', 'mode-edit');
+  modeEl.classList.remove('mode-normal', 'mode-insert', 'mode-edit');
 
-  // Add appropriate class and text
+  // Only normal and insert modes supported
   const modeMap: Record<string, { class: string; text: string }> = {
     normal: { class: 'mode-normal', text: 'NORMAL' },
     insert: { class: 'mode-insert', text: 'INSERT' },
-    visual: { class: 'mode-visual', text: 'VISUAL' },
-    'v-line': { class: 'mode-visual', text: 'V-LINE' },
-    'v-block': { class: 'mode-visual', text: 'V-BLOCK' },
-    replace: { class: 'mode-replace', text: 'REPLACE' },
-    command: { class: 'mode-command', text: 'COMMAND' },
   };
 
   const modeInfo = modeMap[mode.toLowerCase()] || { class: 'mode-edit', text: mode.toUpperCase() };
@@ -302,15 +297,16 @@ function setupVimModeListener(): void {
   if (vimListenerSetup) return;
   vimListenerSetup = true;
 
+  // Disable visual, replace, and command modes - keep only normal and insert
+  Vim.unmap('v', 'normal');
+  Vim.unmap('V', 'normal');
+  Vim.unmap('<C-v>', 'normal');
+  Vim.unmap('R', 'normal');
+  Vim.unmap(':', 'normal');
+
   Vim.on('vim-mode-change', (e: { mode: string; subMode?: string }) => {
     if (!vimEnabled) return;
-
-    let mode = e.mode;
-    // Handle visual sub-modes
-    if (e.mode === 'visual' && e.subMode) {
-      mode = e.subMode === 'linewise' ? 'v-line' : e.subMode === 'blockwise' ? 'v-block' : 'visual';
-    }
-    updateStatuslineMode(mode);
+    updateStatuslineMode(e.mode);
   });
 }
 
