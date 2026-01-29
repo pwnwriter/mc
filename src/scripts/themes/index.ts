@@ -1,4 +1,4 @@
-import type { Extension } from '@codemirror/state';
+import type { Extension } from "@codemirror/state";
 
 export interface McThemeColors {
   bgPrimary: string;
@@ -33,7 +33,7 @@ export function registerTheme(theme: McTheme): void {
 }
 
 export function getTheme(id: string): McTheme | undefined {
-  return themeRegistry.find(t => t.id === id);
+  return themeRegistry.find((t) => t.id === id);
 }
 
 export function getThemesByGroup(): Map<string, McTheme[]> {
@@ -47,15 +47,24 @@ export function getThemesByGroup(): Map<string, McTheme[]> {
 }
 
 export function getDefaultTheme(isDark: boolean): McTheme {
-  const defaultId = isDark ? 'midnight' : 'dawn';
+  const defaultId = isDark ? "midnight" : "dawn";
   return getTheme(defaultId) || themeRegistry[0];
 }
 
 // Import and register themes
-import { midnightTheme } from './midnight';
-import { dawnTheme } from './dawn';
-import { catppuccinLatteTheme, catppuccinFrappeTheme, catppuccinMacchiatoTheme, catppuccinMochaTheme } from './catppuccin';
-import { rosePineTheme, rosePineMoonTheme, rosePineDawnTheme } from './rosepine';
+import { midnightTheme } from "./midnight";
+import { dawnTheme } from "./dawn";
+import {
+  catppuccinLatteTheme,
+  catppuccinFrappeTheme,
+  catppuccinMacchiatoTheme,
+  catppuccinMochaTheme,
+} from "./catppuccin";
+import {
+  rosePineTheme,
+  rosePineMoonTheme,
+  rosePineDawnTheme,
+} from "./rosepine";
 
 registerTheme(midnightTheme);
 registerTheme(dawnTheme);

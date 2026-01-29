@@ -1,14 +1,45 @@
-import { EditorView, keymap, lineNumbers, highlightActiveLine, highlightActiveLineGutter } from '@codemirror/view';
-import { EditorState, Compartment } from '@codemirror/state';
-import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import { bracketMatching, indentOnInput, foldGutter, foldKeymap } from '@codemirror/language';
-import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete';
-import { vim, Vim } from '@replit/codemirror-vim';
+import {
+  EditorView,
+  keymap,
+  lineNumbers,
+  highlightActiveLine,
+  highlightActiveLineGutter,
+} from "@codemirror/view";
+import { EditorState, Compartment } from "@codemirror/state";
+import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
+import {
+  bracketMatching,
+  indentOnInput,
+  foldGutter,
+  foldKeymap,
+} from "@codemirror/language";
+import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
+import { vim, Vim } from "@replit/codemirror-vim";
 
-import { themeRegistry, getTheme, getDefaultTheme, type McTheme } from './themes/index';
-import { languageRegistry, getLanguage, detectPattern, type McLanguage } from './languages/index';
-import { getPreset } from './presets/index';
-import { initAudio, setMusicConfig, playKeySound, playBackspace, playMelodyNote, playPatternSound, isAudioInitialized, setVolume, getVolume } from './music';
+import {
+  themeRegistry,
+  getTheme,
+  getDefaultTheme,
+  type McTheme,
+} from "./themes/index";
+import {
+  languageRegistry,
+  getLanguage,
+  detectPattern,
+  type McLanguage,
+} from "./languages/index";
+import { getPreset } from "./presets/index";
+import {
+  initAudio,
+  setMusicConfig,
+  playKeySound,
+  playBackspace,
+  playMelodyNote,
+  playPatternSound,
+  isAudioInitialized,
+  setVolume,
+  getVolume,
+} from "./music";
 
 let editorView: EditorView | null = null;
 let currentTheme: McTheme;
@@ -19,20 +50,20 @@ const themeCompartment = new Compartment();
 const languageCompartment = new Compartment();
 const vimCompartment = new Compartment();
 
-let lastCode = '';
+let lastCode = "";
 let keystrokeCount = 0;
 
 // Language to filename mapping
 const languageFileNames: Record<string, string> = {
-  javascript: 'main.js',
-  python: 'main.py',
-  rust: 'main.rs',
-  zig: 'main.zig',
+  javascript: "main.js",
+  python: "main.py",
+  rust: "main.rs",
+  zig: "main.zig",
 };
 
 export async function initEditor(container: HTMLElement): Promise<EditorView> {
   // Set defaults based on system preference
-  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   currentTheme = getDefaultTheme(isDark);
   currentLanguage = languageRegistry[0];
 
@@ -72,7 +103,7 @@ export async function initEditor(container: HTMLElement): Promise<EditorView> {
           handleKeystroke(event.key);
 
           // Enable vim mode with Ctrl + [
-          if (!vimEnabled && event.key === '[' && event.ctrlKey) {
+          if (!vimEnabled && event.key === "[" && event.ctrlKey) {
             event.preventDefault();
             enableVim();
           }
@@ -91,7 +122,7 @@ export async function initEditor(container: HTMLElement): Promise<EditorView> {
 
   // Initialize statusline
   updateStatuslineFile(currentLanguage.id, currentLanguage.name);
-  updateStatuslineMode('edit');
+  updateStatuslineMode("edit");
   updateStatuslinePosition(editorView);
 
   // Set up vim mode change listener
@@ -102,12 +133,12 @@ export async function initEditor(container: HTMLElement): Promise<EditorView> {
 
 function applyThemeColors(theme: McTheme): void {
   const root = document.documentElement;
-  root.style.setProperty('--bg-primary', theme.colors.bgPrimary);
-  root.style.setProperty('--bg-secondary', theme.colors.bgSecondary);
-  root.style.setProperty('--text-primary', theme.colors.textPrimary);
-  root.style.setProperty('--text-secondary', theme.colors.textSecondary);
-  root.style.setProperty('--accent', theme.colors.accent);
-  root.style.setProperty('--border', theme.colors.border);
+  root.style.setProperty("--bg-primary", theme.colors.bgPrimary);
+  root.style.setProperty("--bg-secondary", theme.colors.bgSecondary);
+  root.style.setProperty("--text-primary", theme.colors.textPrimary);
+  root.style.setProperty("--text-secondary", theme.colors.textSecondary);
+  root.style.setProperty("--accent", theme.colors.accent);
+  root.style.setProperty("--border", theme.colors.border);
 }
 
 async function handleKeystroke(key: string): Promise<void> {
@@ -115,14 +146,14 @@ async function handleKeystroke(key: string): Promise<void> {
     await initAudio();
     setMusicConfig(currentTheme.music);
     // Update audio indicator
-    const indicator = document.getElementById('audio-indicator');
+    const indicator = document.getElementById("audio-indicator");
     if (indicator) {
-      indicator.classList.add('active');
-      indicator.title = 'Audio active';
+      indicator.classList.add("active");
+      indicator.title = "Audio active";
     }
   }
 
-  const isBackspace = key === 'Backspace' || key === 'Delete';
+  const isBackspace = key === "Backspace" || key === "Delete";
 
   if (isBackspace) {
     playBackspace();
@@ -151,7 +182,11 @@ function handleCodeChange(code: string): void {
     hasConditional: patterns.hasConditional && !lastPatterns.hasConditional,
   };
 
-  if (newPatterns.hasFunction || newPatterns.hasLoop || newPatterns.hasConditional) {
+  if (
+    newPatterns.hasFunction ||
+    newPatterns.hasLoop ||
+    newPatterns.hasConditional
+  ) {
     playPatternSound(newPatterns);
   }
 
@@ -207,7 +242,7 @@ export function toggleVim(): boolean {
   });
 
   // Update statusline mode
-  updateStatuslineMode(vimEnabled ? 'normal' : 'edit');
+  updateStatuslineMode(vimEnabled ? "normal" : "edit");
 
   return vimEnabled;
 }
@@ -221,13 +256,13 @@ function enableVim(): void {
   });
 
   // Update statusline mode
-  updateStatuslineMode('normal');
+  updateStatuslineMode("normal");
 
   // Sync the toggle button in settings
-  const vimToggle = document.getElementById('vim-toggle');
+  const vimToggle = document.getElementById("vim-toggle");
   if (vimToggle) {
-    vimToggle.setAttribute('aria-pressed', 'true');
-    vimToggle.classList.add('active');
+    vimToggle.setAttribute("aria-pressed", "true");
+    vimToggle.classList.add("active");
   }
 }
 
@@ -253,36 +288,42 @@ function updateStatuslinePosition(view: EditorView): void {
   const line = view.state.doc.lineAt(pos);
   const col = pos - line.from + 1;
 
-  const positionEl = document.getElementById('statusline-position');
+  const positionEl = document.getElementById("statusline-position");
   if (positionEl) {
     positionEl.textContent = `${line.number}:${col}`;
   }
 }
 
 export function updateStatuslineMode(mode: string): void {
-  const modeEl = document.getElementById('statusline-mode');
+  const modeEl = document.getElementById("statusline-mode");
   if (!modeEl) return;
 
   // Remove all mode classes
-  modeEl.classList.remove('mode-normal', 'mode-insert', 'mode-edit');
+  modeEl.classList.remove("mode-normal", "mode-insert", "mode-edit");
 
   // Only normal and insert modes supported
   const modeMap: Record<string, { class: string; text: string }> = {
-    normal: { class: 'mode-normal', text: 'NORMAL' },
-    insert: { class: 'mode-insert', text: 'INSERT' },
+    normal: { class: "mode-normal", text: "NORMAL" },
+    insert: { class: "mode-insert", text: "INSERT" },
   };
 
-  const modeInfo = modeMap[mode.toLowerCase()] || { class: 'mode-edit', text: mode.toUpperCase() };
+  const modeInfo = modeMap[mode.toLowerCase()] || {
+    class: "mode-edit",
+    text: mode.toUpperCase(),
+  };
   modeEl.classList.add(modeInfo.class);
   modeEl.textContent = modeInfo.text;
 }
 
-export function updateStatuslineFile(languageId: string, languageName: string): void {
+export function updateStatuslineFile(
+  languageId: string,
+  languageName: string,
+): void {
   const fileName = languageFileNames[languageId] || `main.${languageId}`;
 
-  const bufferNameEl = document.getElementById('buffer-name');
-  const fileEl = document.getElementById('statusline-file');
-  const langEl = document.getElementById('statusline-language');
+  const bufferNameEl = document.getElementById("buffer-name");
+  const fileEl = document.getElementById("statusline-file");
+  const langEl = document.getElementById("statusline-language");
 
   if (bufferNameEl) bufferNameEl.textContent = fileName;
   if (fileEl) fileEl.textContent = fileName;
@@ -300,13 +341,13 @@ function setupVimModeListener(): void {
   vimListenerSetup = true;
 
   // Disable visual, replace, and command modes - keep only normal and insert
-  Vim.unmap('v', 'normal');
-  Vim.unmap('V', 'normal');
-  Vim.unmap('<C-v>', 'normal');
-  Vim.unmap('R', 'normal');
-  Vim.unmap(':', 'normal');
+  Vim.unmap("v", "normal");
+  Vim.unmap("V", "normal");
+  Vim.unmap("<C-v>", "normal");
+  Vim.unmap("R", "normal");
+  Vim.unmap(":", "normal");
 
-  Vim.on('vim-mode-change', (e: { mode: string; subMode?: string }) => {
+  Vim.on("vim-mode-change", (e: { mode: string; subMode?: string }) => {
     if (!vimEnabled) return;
     updateStatuslineMode(e.mode);
   });

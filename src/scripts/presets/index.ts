@@ -1,8 +1,8 @@
-import { javascriptPreset } from './javascript';
-import { nixPreset } from './nix';
-import { pythonPreset } from './python';
-import { rustPreset } from './rust';
-import { zigPreset } from './zig';
+import { javascriptPreset } from "./javascript";
+import { nixPreset } from "./nix";
+import { pythonPreset } from "./python";
+import { rustPreset } from "./rust";
+import { zigPreset } from "./zig";
 
 const presets: Record<string, string> = {
   javascript: javascriptPreset,

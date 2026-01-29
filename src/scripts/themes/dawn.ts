@@ -1,46 +1,47 @@
-import { EditorView } from '@codemirror/view';
-import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
-import { tags } from '@lezer/highlight';
-import type { McTheme } from './index';
+import { EditorView } from "@codemirror/view";
+import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
+import { tags } from "@lezer/highlight";
+import type { McTheme } from "./index";
 
 const colors = {
-  bg: '#faf4ed',
-  bgSecondary: '#fffaf3',
-  fg: '#575279',
-  fgMuted: '#9893a5',
-  accent: '#907aa9',
-  border: '#dfdad9',
-  keyword: '#b4637a',
-  string: '#ea9d34',
-  comment: '#9893a5',
-  function: '#d7827e',
-  variable: '#286983',
-  number: '#56949f',
+  bg: "#faf4ed",
+  bgSecondary: "#fffaf3",
+  fg: "#575279",
+  fgMuted: "#9893a5",
+  accent: "#907aa9",
+  border: "#dfdad9",
+  keyword: "#b4637a",
+  string: "#ea9d34",
+  comment: "#9893a5",
+  function: "#d7827e",
+  variable: "#286983",
+  number: "#56949f",
 };
 
 const editorTheme = EditorView.theme({
-  '&': {
+  "&": {
     backgroundColor: colors.bg,
     color: colors.fg,
   },
-  '.cm-content': {
+  ".cm-content": {
     caretColor: colors.accent,
   },
-  '.cm-cursor, .cm-dropCursor': {
+  ".cm-cursor, .cm-dropCursor": {
     borderLeftColor: colors.accent,
   },
-  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': {
-    backgroundColor: '#dfdad9',
-  },
-  '.cm-gutters': {
+  "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection":
+    {
+      backgroundColor: "#dfdad9",
+    },
+  ".cm-gutters": {
     backgroundColor: colors.bg,
     color: colors.fgMuted,
-    border: 'none',
+    border: "none",
   },
-  '.cm-activeLineGutter': {
+  ".cm-activeLineGutter": {
     backgroundColor: colors.bgSecondary,
   },
-  '.cm-activeLine': {
+  ".cm-activeLine": {
     backgroundColor: colors.bgSecondary,
   },
 });
@@ -52,7 +53,7 @@ const highlightStyle = HighlightStyle.define([
   { tag: tags.function(tags.variableName), color: colors.function },
   { tag: tags.definition(tags.variableName), color: colors.variable },
   { tag: tags.string, color: colors.string },
-  { tag: tags.comment, color: colors.comment, fontStyle: 'italic' },
+  { tag: tags.comment, color: colors.comment, fontStyle: "italic" },
   { tag: tags.number, color: colors.number },
   { tag: tags.bool, color: colors.keyword },
   { tag: tags.null, color: colors.keyword },
@@ -63,12 +64,12 @@ const highlightStyle = HighlightStyle.define([
 ]);
 
 export const dawnTheme: McTheme = {
-  id: 'dawn',
-  name: 'Dawn',
-  group: 'Mc',
+  id: "dawn",
+  name: "Dawn",
+  group: "Mc",
   editor: [editorTheme, syntaxHighlighting(highlightStyle)],
   music: {
-    scale: ['D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5'],
+    scale: ["D4", "E4", "F#4", "A4", "B4", "D5", "E5", "F#5"],
     attack: 0.05,
     release: 1.0,
     reverb: 0.5,

@@ -1,4 +1,4 @@
-import type { Extension } from '@codemirror/state';
+import type { Extension } from "@codemirror/state";
 
 export interface McLanguagePatterns {
   function: RegExp;
@@ -22,10 +22,13 @@ export function registerLanguage(language: McLanguage): void {
 }
 
 export function getLanguage(id: string): McLanguage | undefined {
-  return languageRegistry.find(l => l.id === id);
+  return languageRegistry.find((l) => l.id === id);
 }
 
-export function detectPattern(code: string, language: McLanguage): {
+export function detectPattern(
+  code: string,
+  language: McLanguage,
+): {
   hasFunction: boolean;
   hasLoop: boolean;
   hasConditional: boolean;
@@ -42,11 +45,11 @@ export function detectPattern(code: string, language: McLanguage): {
 }
 
 // Import and register languages
-import { javascriptLanguage } from './javascript';
-import { pythonLanguage } from './python';
-import { rustLanguage } from './rust';
-import { zigLanguage } from './zig';
-import { nixLanguage } from './nix';
+import { javascriptLanguage } from "./javascript";
+import { pythonLanguage } from "./python";
+import { rustLanguage } from "./rust";
+import { zigLanguage } from "./zig";
+import { nixLanguage } from "./nix";
 
 registerLanguage(javascriptLanguage);
 registerLanguage(pythonLanguage);

@@ -1,11 +1,10 @@
-import type { McLanguage } from '.';
-
+import type { McLanguage } from ".";
 
 export const nixLanguage: McLanguage = {
-  id: 'nix',
-  name: 'Nix',
+  id: "nix",
+  name: "Nix",
   syntax: async () => {
-    const { nix } = await import('@replit/codemirror-lang-nix');
+    const { nix } = await import("@replit/codemirror-lang-nix");
     return nix();
   },
   patterns: {
@@ -16,4 +15,3 @@ export const nixLanguage: McLanguage = {
     comment: /#.*$|\/\*[\s\S]*?\*\//m,
   },
 };
-

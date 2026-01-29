@@ -1,10 +1,10 @@
-import type { McLanguage } from './index';
+import type { McLanguage } from "./index";
 
 export const pythonLanguage: McLanguage = {
-  id: 'python',
-  name: 'Python',
+  id: "python",
+  name: "Python",
   syntax: async () => {
-    const { python } = await import('@codemirror/lang-python');
+    const { python } = await import("@codemirror/lang-python");
     return python();
   },
   patterns: {

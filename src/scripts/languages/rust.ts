@@ -1,10 +1,10 @@
-import type { McLanguage } from './index';
+import type { McLanguage } from "./index";
 
 export const rustLanguage: McLanguage = {
-  id: 'rust',
-  name: 'Rust',
+  id: "rust",
+  name: "Rust",
   syntax: async () => {
-    const { rust } = await import('@codemirror/lang-rust');
+    const { rust } = await import("@codemirror/lang-rust");
     return rust();
   },
   patterns: {

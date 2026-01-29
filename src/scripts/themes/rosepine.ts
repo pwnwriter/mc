@@ -1,32 +1,37 @@
-import { EditorView } from '@codemirror/view';
-import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
-import { tags } from '@lezer/highlight';
-import type { McTheme } from './index';
+import { EditorView } from "@codemirror/view";
+import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
+import { tags } from "@lezer/highlight";
+import type { McTheme } from "./index";
 
 // Rosé Pine (Main)
 const main = {
-  bg: '#191724',
-  bgSecondary: '#1f1d2e',
-  fg: '#e0def4',
-  fgMuted: '#908caa',
-  accent: '#c4a7e7',
-  border: '#26233a',
-  keyword: '#31748f',
-  string: '#f6c177',
-  comment: '#6e6a86',
-  function: '#ebbcba',
-  variable: '#9ccfd8',
-  number: '#eb6f92',
+  bg: "#191724",
+  bgSecondary: "#1f1d2e",
+  fg: "#e0def4",
+  fgMuted: "#908caa",
+  accent: "#c4a7e7",
+  border: "#26233a",
+  keyword: "#31748f",
+  string: "#f6c177",
+  comment: "#6e6a86",
+  function: "#ebbcba",
+  variable: "#9ccfd8",
+  number: "#eb6f92",
 };
 
 const mainEditorTheme = EditorView.theme({
-  '&': { backgroundColor: main.bg, color: main.fg },
-  '.cm-content': { caretColor: main.accent },
-  '.cm-cursor, .cm-dropCursor': { borderLeftColor: main.accent },
-  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': { backgroundColor: '#26233a' },
-  '.cm-gutters': { backgroundColor: main.bg, color: main.fgMuted, border: 'none' },
-  '.cm-activeLineGutter': { backgroundColor: main.bgSecondary },
-  '.cm-activeLine': { backgroundColor: main.bgSecondary },
+  "&": { backgroundColor: main.bg, color: main.fg },
+  ".cm-content": { caretColor: main.accent },
+  ".cm-cursor, .cm-dropCursor": { borderLeftColor: main.accent },
+  "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection":
+    { backgroundColor: "#26233a" },
+  ".cm-gutters": {
+    backgroundColor: main.bg,
+    color: main.fgMuted,
+    border: "none",
+  },
+  ".cm-activeLineGutter": { backgroundColor: main.bgSecondary },
+  ".cm-activeLine": { backgroundColor: main.bgSecondary },
 });
 
 const mainHighlight = HighlightStyle.define([
@@ -36,7 +41,7 @@ const mainHighlight = HighlightStyle.define([
   { tag: tags.function(tags.variableName), color: main.function },
   { tag: tags.definition(tags.variableName), color: main.variable },
   { tag: tags.string, color: main.string },
-  { tag: tags.comment, color: main.comment, fontStyle: 'italic' },
+  { tag: tags.comment, color: main.comment, fontStyle: "italic" },
   { tag: tags.number, color: main.number },
   { tag: tags.bool, color: main.keyword },
   { tag: tags.null, color: main.keyword },
@@ -47,12 +52,12 @@ const mainHighlight = HighlightStyle.define([
 ]);
 
 export const rosePineTheme: McTheme = {
-  id: 'rosepine',
-  name: 'Rosé Pine',
-  group: 'Rosé Pine',
+  id: "rosepine",
+  name: "Rosé Pine",
+  group: "Rosé Pine",
   editor: [mainEditorTheme, syntaxHighlighting(mainHighlight)],
   music: {
-    scale: ['D4', 'F4', 'G4', 'A4', 'C5', 'D5', 'F5', 'G5'],
+    scale: ["D4", "F4", "G4", "A4", "C5", "D5", "F5", "G5"],
     attack: 0.03,
     release: 1.1,
     reverb: 0.7,
@@ -70,28 +75,33 @@ export const rosePineTheme: McTheme = {
 
 // Rosé Pine Moon
 const moon = {
-  bg: '#232136',
-  bgSecondary: '#2a273f',
-  fg: '#e0def4',
-  fgMuted: '#908caa',
-  accent: '#c4a7e7',
-  border: '#393552',
-  keyword: '#3e8fb0',
-  string: '#f6c177',
-  comment: '#6e6a86',
-  function: '#ea9a97',
-  variable: '#9ccfd8',
-  number: '#eb6f92',
+  bg: "#232136",
+  bgSecondary: "#2a273f",
+  fg: "#e0def4",
+  fgMuted: "#908caa",
+  accent: "#c4a7e7",
+  border: "#393552",
+  keyword: "#3e8fb0",
+  string: "#f6c177",
+  comment: "#6e6a86",
+  function: "#ea9a97",
+  variable: "#9ccfd8",
+  number: "#eb6f92",
 };
 
 const moonEditorTheme = EditorView.theme({
-  '&': { backgroundColor: moon.bg, color: moon.fg },
-  '.cm-content': { caretColor: moon.accent },
-  '.cm-cursor, .cm-dropCursor': { borderLeftColor: moon.accent },
-  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': { backgroundColor: '#393552' },
-  '.cm-gutters': { backgroundColor: moon.bg, color: moon.fgMuted, border: 'none' },
-  '.cm-activeLineGutter': { backgroundColor: moon.bgSecondary },
-  '.cm-activeLine': { backgroundColor: moon.bgSecondary },
+  "&": { backgroundColor: moon.bg, color: moon.fg },
+  ".cm-content": { caretColor: moon.accent },
+  ".cm-cursor, .cm-dropCursor": { borderLeftColor: moon.accent },
+  "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection":
+    { backgroundColor: "#393552" },
+  ".cm-gutters": {
+    backgroundColor: moon.bg,
+    color: moon.fgMuted,
+    border: "none",
+  },
+  ".cm-activeLineGutter": { backgroundColor: moon.bgSecondary },
+  ".cm-activeLine": { backgroundColor: moon.bgSecondary },
 });
 
 const moonHighlight = HighlightStyle.define([
@@ -101,7 +111,7 @@ const moonHighlight = HighlightStyle.define([
   { tag: tags.function(tags.variableName), color: moon.function },
   { tag: tags.definition(tags.variableName), color: moon.variable },
   { tag: tags.string, color: moon.string },
-  { tag: tags.comment, color: moon.comment, fontStyle: 'italic' },
+  { tag: tags.comment, color: moon.comment, fontStyle: "italic" },
   { tag: tags.number, color: moon.number },
   { tag: tags.bool, color: moon.keyword },
   { tag: tags.null, color: moon.keyword },
@@ -112,12 +122,12 @@ const moonHighlight = HighlightStyle.define([
 ]);
 
 export const rosePineMoonTheme: McTheme = {
-  id: 'rosepine-moon',
-  name: 'Moon',
-  group: 'Rosé Pine',
+  id: "rosepine-moon",
+  name: "Moon",
+  group: "Rosé Pine",
   editor: [moonEditorTheme, syntaxHighlighting(moonHighlight)],
   music: {
-    scale: ['E4', 'G4', 'A4', 'B4', 'D5', 'E5', 'G5', 'A5'],
+    scale: ["E4", "G4", "A4", "B4", "D5", "E5", "G5", "A5"],
     attack: 0.025,
     release: 1.0,
     reverb: 0.65,
@@ -135,28 +145,33 @@ export const rosePineMoonTheme: McTheme = {
 
 // Rosé Pine Dawn
 const dawn = {
-  bg: '#faf4ed',
-  bgSecondary: '#fffaf3',
-  fg: '#575279',
-  fgMuted: '#9893a5',
-  accent: '#907aa9',
-  border: '#f2e9e1',
-  keyword: '#286983',
-  string: '#ea9d34',
-  comment: '#9893a5',
-  function: '#d7827e',
-  variable: '#56949f',
-  number: '#b4637a',
+  bg: "#faf4ed",
+  bgSecondary: "#fffaf3",
+  fg: "#575279",
+  fgMuted: "#9893a5",
+  accent: "#907aa9",
+  border: "#f2e9e1",
+  keyword: "#286983",
+  string: "#ea9d34",
+  comment: "#9893a5",
+  function: "#d7827e",
+  variable: "#56949f",
+  number: "#b4637a",
 };
 
 const dawnEditorTheme = EditorView.theme({
-  '&': { backgroundColor: dawn.bg, color: dawn.fg },
-  '.cm-content': { caretColor: dawn.accent },
-  '.cm-cursor, .cm-dropCursor': { borderLeftColor: dawn.accent },
-  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection': { backgroundColor: '#f2e9e1' },
-  '.cm-gutters': { backgroundColor: dawn.bg, color: dawn.fgMuted, border: 'none' },
-  '.cm-activeLineGutter': { backgroundColor: dawn.bgSecondary },
-  '.cm-activeLine': { backgroundColor: dawn.bgSecondary },
+  "&": { backgroundColor: dawn.bg, color: dawn.fg },
+  ".cm-content": { caretColor: dawn.accent },
+  ".cm-cursor, .cm-dropCursor": { borderLeftColor: dawn.accent },
+  "&.cm-focused .cm-selectionBackground, .cm-selectionBackground, .cm-content ::selection":
+    { backgroundColor: "#f2e9e1" },
+  ".cm-gutters": {
+    backgroundColor: dawn.bg,
+    color: dawn.fgMuted,
+    border: "none",
+  },
+  ".cm-activeLineGutter": { backgroundColor: dawn.bgSecondary },
+  ".cm-activeLine": { backgroundColor: dawn.bgSecondary },
 });
 
 const dawnHighlight = HighlightStyle.define([
@@ -166,7 +181,7 @@ const dawnHighlight = HighlightStyle.define([
   { tag: tags.function(tags.variableName), color: dawn.function },
   { tag: tags.definition(tags.variableName), color: dawn.variable },
   { tag: tags.string, color: dawn.string },
-  { tag: tags.comment, color: dawn.comment, fontStyle: 'italic' },
+  { tag: tags.comment, color: dawn.comment, fontStyle: "italic" },
   { tag: tags.number, color: dawn.number },
   { tag: tags.bool, color: dawn.keyword },
   { tag: tags.null, color: dawn.keyword },
@@ -177,12 +192,12 @@ const dawnHighlight = HighlightStyle.define([
 ]);
 
 export const rosePineDawnTheme: McTheme = {
-  id: 'rosepine-dawn',
-  name: 'Dawn',
-  group: 'Rosé Pine',
+  id: "rosepine-dawn",
+  name: "Dawn",
+  group: "Rosé Pine",
   editor: [dawnEditorTheme, syntaxHighlighting(dawnHighlight)],
   music: {
-    scale: ['F4', 'A4', 'Bb4', 'C5', 'Eb5', 'F5', 'A5', 'Bb5'],
+    scale: ["F4", "A4", "Bb4", "C5", "Eb5", "F5", "A5", "Bb5"],
     attack: 0.04,
     release: 0.95,
     reverb: 0.5,
