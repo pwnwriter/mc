@@ -65,7 +65,7 @@ export async function initEditor(container: HTMLElement): Promise<EditorView> {
   // Set defaults based on system preference
   const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   currentTheme = getDefaultTheme(isDark);
-  currentLanguage = languageRegistry[0];
+  currentLanguage = getLanguage("rust") || languageRegistry[0];
 
   const languageExtension = await currentLanguage.syntax();
 

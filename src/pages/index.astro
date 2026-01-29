@@ -233,6 +233,8 @@ import '../styles/global.css';
           languageSelect.appendChild(option);
         });
 
+        languageSelect.value = 'rust';
+
         languageSelect.addEventListener('change', () => {
           setLanguage(languageSelect.value);
         });
