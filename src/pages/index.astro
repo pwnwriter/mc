@@ -119,12 +119,80 @@ import '../styles/global.css';
         </div>
 
         <div class="settings-footer">
+          <button id="thanks-toggle" class="thanks-button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            <span>Thanks</span>
+          </button>
           <a href="https://github.com/pwnwriter" target="_blank" rel="noopener noreferrer" class="dev-link">
             <img src="https://github.com/pwnwriter.png" alt="pwnwriter" class="dev-avatar" />
             <span>pwnwriter</span>
           </a>
         </div>
       </aside>
+
+      <div id="thanks-modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content thanks-content">
+          <button id="thanks-close" class="close-button" aria-label="Close thanks">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <div class="thanks-header">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            <h2>Built with</h2>
+          </div>
+          <p class="thanks-desc">mc wouldn't exist without these goated projects</p>
+          <div class="deps-list">
+            <div class="deps-section">
+              <h3>Core</h3>
+              <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="dep-item">
+                <span class="dep-name">astro</span>
+                <span class="dep-desc">the web framework</span>
+              </a>
+              <a href="https://codemirror.net" target="_blank" rel="noopener noreferrer" class="dep-item">
+                <span class="dep-name">codemirror</span>
+                <span class="dep-desc">code editor</span>
+              </a>
+              <a href="https://tonejs.github.io" target="_blank" rel="noopener noreferrer" class="dep-item">
+                <span class="dep-name">tone.js</span>
+                <span class="dep-desc">web audio synthesis</span>
+              </a>
+            </div>
+            <div class="deps-section">
+              <h3>Languages</h3>
+              <a href="https://github.com/codemirror/lang-javascript" target="_blank" rel="noopener noreferrer" class="dep-item">
+                <span class="dep-name">@codemirror/lang-javascript</span>
+              </a>
+              <a href="https://github.com/codemirror/lang-python" target="_blank" rel="noopener noreferrer" class="dep-item">
+                <span class="dep-name">@codemirror/lang-python</span>
+              </a>
+              <a href="https://github.com/codemirror/lang-rust" target="_blank" rel="noopener noreferrer" class="dep-item">
+                <span class="dep-name">@codemirror/lang-rust</span>
+              </a>
+              <a href="https://github.com/replit/codemirror-lang-nix" target="_blank" rel="noopener noreferrer" class="dep-item">
+                <span class="dep-name">@replit/codemirror-lang-nix</span>
+              </a>
+            </div>
+            <div class="deps-section">
+              <h3>Editor</h3>
+              <a href="https://github.com/replit/codemirror-vim" target="_blank" rel="noopener noreferrer" class="dep-item">
+                <span class="dep-name">@replit/codemirror-vim</span>
+                <span class="dep-desc">vim keybindings</span>
+              </a>
+              <a href="https://github.com/codemirror/theme-one-dark" target="_blank" rel="noopener noreferrer" class="dep-item">
+                <span class="dep-name">@codemirror/theme-one-dark</span>
+                <span class="dep-desc">theme reference</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div id="about-modal" class="modal hidden">
         <div class="modal-backdrop"></div>
@@ -198,6 +266,24 @@ import '../styles/global.css';
         aboutModal?.classList.add('hidden');
       });
 
+      // Thanks modal toggle
+      const thanksToggle = document.getElementById('thanks-toggle');
+      const thanksModal = document.getElementById('thanks-modal');
+      const thanksClose = document.getElementById('thanks-close');
+      const thanksBackdrop = thanksModal?.querySelector('.modal-backdrop');
+
+      thanksToggle?.addEventListener('click', () => {
+        thanksModal?.classList.remove('hidden');
+      });
+
+      thanksClose?.addEventListener('click', () => {
+        thanksModal?.classList.add('hidden');
+      });
+
+      thanksBackdrop?.addEventListener('click', () => {
+        thanksModal?.classList.add('hidden');
+      });
+
       // Theme select
       const themeSelect = document.getElementById('theme-select') as HTMLSelectElement;
       if (themeSelect) {
@@ -262,7 +348,9 @@ import '../styles/global.css';
       // Close panels on escape
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-          if (!aboutModal?.classList.contains('hidden')) {
+          if (!thanksModal?.classList.contains('hidden')) {
+            thanksModal?.classList.add('hidden');
+          } else if (!aboutModal?.classList.contains('hidden')) {
             aboutModal?.classList.add('hidden');
           } else if (!settingsPanel?.classList.contains('hidden')) {
             settingsPanel?.classList.add('hidden');
