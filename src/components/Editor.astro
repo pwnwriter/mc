@@ -1,8 +1,33 @@
 ---
-// Editor component - CodeMirror container
+// Editor component - CodeMirror container with neovim-style buffer bar and statusline
 ---
 
-<div id="editor-container"></div>
+<div class="editor-container-wrapper">
+  <div class="buffer-bar">
+    <div class="buffer-tab active">
+      <span class="buffer-icon"></span>
+      <span id="buffer-name">main.js</span>
+      <span class="buffer-modified"></span>
+    </div>
+  </div>
+
+  <div id="editor-container"></div>
+
+  <div class="statusline">
+    <div class="statusline-left">
+      <span id="statusline-mode" class="statusline-mode mode-normal">NORMAL</span>
+    </div>
+    <div class="statusline-center">
+      <span class="statusline-icon"></span>
+      <span id="statusline-file">main.js</span>
+    </div>
+    <div class="statusline-right">
+      <span id="statusline-position" class="statusline-position">1:1</span>
+      <span class="statusline-separator"></span>
+      <span id="statusline-language" class="statusline-language">JavaScript</span>
+    </div>
+  </div>
+</div>
 
 <script>
   import { initEditor } from '../scripts/editor';
@@ -14,9 +39,66 @@
 </script>
 
 <style>
-  #editor-container {
+  .editor-container-wrapper {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
+    overflow: hidden;
+  }
+
+  /* Buffer Bar - Neovim style */
+  .buffer-bar {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 0 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .buffer-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    background: transparent;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+  }
+
+  .buffer-tab.active {
+    color: var(--text-primary);
+    background: var(--bg-primary);
+  }
+
+  .buffer-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--bg-primary);
+  }
+
+  .buffer-icon::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 2px;
+    opacity: 0.8;
+  }
+
+  /* Editor Container */
+  #editor-container {
+    flex: 1;
+    width: 100%;
     overflow: hidden;
   }
 
@@ -29,7 +111,7 @@
 
   #editor-container :global(.cm-scroller) {
     overflow: auto;
-    padding: 1.5rem 2rem;
+    padding: 1rem 1.5rem;
   }
 
   #editor-container :global(.cm-gutters) {
@@ -55,16 +137,136 @@
     outline: none;
   }
 
-  /* Vim mode cursor styles */
+  /* Hide vim's default panel - we have our own statusline */
   #editor-container :global(.cm-vim-panel) {
-    padding: 0.25rem 0.5rem;
-    font-size: 12px;
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border);
+    display: none;
   }
 
   #editor-container :global(.cm-fat-cursor) {
     background-color: var(--accent) !important;
     opacity: 0.7;
+  }
+
+  /* Statusline - Lualine inspired */
+  .statusline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 28px;
+    margin: 0 0.5rem 0.5rem 0.5rem;
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    font-size: 0.75rem;
+    font-weight: 500;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .statusline-left,
+  .statusline-center,
+  .statusline-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .statusline-left {
+    flex: 0 0 auto;
+  }
+
+  .statusline-center {
+    flex: 1;
+    justify-content: center;
+    gap: 0.375rem;
+    color: var(--text-secondary);
+  }
+
+  .statusline-right {
+    flex: 0 0 auto;
+    gap: 0.25rem;
+    padding-right: 0.75rem;
+  }
+
+  /* Mode indicator with lualine-style colors */
+  .statusline-mode {
+    padding: 0 1rem;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    border-radius: 5px;
+    margin-left: 1px;
+    padding-right: 0.75rem;
+  }
+
+  .mode-normal {
+    background: linear-gradient(135deg, #7aa2f7 0%, #5d8fdd 100%);
+    color: #1a1b26;
+  }
+
+  .mode-insert {
+    background: linear-gradient(135deg, #9ece6a 0%, #7fb85a 100%);
+    color: #1a1b26;
+  }
+
+  .mode-visual {
+    background: linear-gradient(135deg, #bb9af7 0%, #9d7cd8 100%);
+    color: #1a1b26;
+  }
+
+  .mode-replace {
+    background: linear-gradient(135deg, #f7768e 0%, #db6070 100%);
+    color: #1a1b26;
+  }
+
+  .mode-command {
+    background: linear-gradient(135deg, #e0af68 0%, #c99a4e 100%);
+    color: #1a1b26;
+  }
+
+  .mode-edit {
+    background: linear-gradient(135deg, #565f89 0%, #414868 100%);
+    color: #c0caf5;
+  }
+
+  .statusline-icon::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  .statusline-position {
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .statusline-separator {
+    width: 1px;
+    height: 14px;
+    background: var(--border);
+    margin: 0 0.375rem;
+  }
+
+  .statusline-language {
+    color: var(--accent);
+    padding: 0.25rem 0.5rem;
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    border-radius: 4px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .statusline-center {
+      display: none;
+    }
   }
 </style>
