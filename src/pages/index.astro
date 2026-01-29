@@ -54,9 +54,9 @@ import '../styles/global.css';
 
       <aside id="settings-panel" class="settings-panel hidden">
         <div class="settings-header">
-          <h2>Settings</h2>
+          <span class="settings-title">Settings</span>
           <button id="settings-close" class="close-button" aria-label="Close settings">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -64,36 +64,63 @@ import '../styles/global.css';
         </div>
 
         <div class="settings-content">
-          <div class="setting-group">
-            <label for="theme-select">Theme</label>
-            <select id="theme-select"></select>
-          </div>
-
-          <div class="setting-group">
-            <label for="language-select">Language</label>
-            <select id="language-select"></select>
-          </div>
-
-          <div class="setting-group">
-            <label class="toggle-label">
-              <span>Vim Mode</span>
-              <button id="vim-toggle" class="toggle-button" aria-pressed="false">
-                <span class="toggle-track">
-                  <span class="toggle-thumb"></span>
-                </span>
-              </button>
+          <div class="setting-row">
+            <label for="volume-slider" class="setting-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+              <span>Volume</span>
             </label>
+            <div class="slider-container">
+              <input type="range" id="volume-slider" min="0" max="100" value="70" class="volume-slider" />
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <label for="theme-select" class="setting-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+              </svg>
+              <span>Theme</span>
+            </label>
+            <select id="theme-select" class="setting-select"></select>
+          </div>
+
+          <div class="setting-row">
+            <label for="language-select" class="setting-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+              <span>Language</span>
+            </label>
+            <select id="language-select" class="setting-select"></select>
+          </div>
+
+          <div class="setting-row">
+            <label class="setting-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 7V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2H4"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <path d="M5 12h.01M5 16h.01M5 20h.01"></path>
+              </svg>
+              <span>Vim Mode</span>
+            </label>
+            <button id="vim-toggle" class="toggle-button" aria-pressed="false">
+              <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+              </span>
+            </button>
           </div>
         </div>
 
         <div class="settings-footer">
-          <p class="hint">Start typing to hear your code come alive</p>
-          <div class="developer-credit">
-            <a href="https://github.com/pwnwriter" target="_blank" rel="noopener noreferrer" class="dev-link">
-              <img src="https://github.com/pwnwriter.png" alt="pwnwriter" class="dev-avatar" />
-              <span>by pwnwriter</span>
-            </a>
-          </div>
+          <a href="https://github.com/pwnwriter" target="_blank" rel="noopener noreferrer" class="dev-link">
+            <img src="https://github.com/pwnwriter.png" alt="pwnwriter" class="dev-avatar" />
+            <span>pwnwriter</span>
+          </a>
         </div>
       </aside>
 
@@ -135,7 +162,7 @@ import '../styles/global.css';
     </div>
 
     <script>
-      import { setTheme, setLanguage, toggleVim, themeRegistry, languageRegistry } from '../scripts/editor';
+      import { setTheme, setLanguage, toggleVim, setVolume, getVolume, themeRegistry, languageRegistry } from '../scripts/editor';
       import { getThemesByGroup } from '../scripts/themes/index';
 
       // Settings panel toggle
@@ -216,6 +243,15 @@ import '../styles/global.css';
           const enabled = toggleVim();
           vimToggle.setAttribute('aria-pressed', String(enabled));
           vimToggle.classList.toggle('active', enabled);
+        });
+      }
+
+      // Volume slider
+      const volumeSlider = document.getElementById('volume-slider') as HTMLInputElement;
+      if (volumeSlider) {
+        volumeSlider.value = String(getVolume() * 100);
+        volumeSlider.addEventListener('input', () => {
+          setVolume(Number(volumeSlider.value) / 100);
         });
       }
 

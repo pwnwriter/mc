@@ -3,6 +3,7 @@ import type { MucoThemeMusic } from './themes/index';
 
 let isInitialized = false;
 let clickSynth: Tone.MembraneSynth | null = null;
+let backspaceSynth: Tone.MembraneSynth | null = null;
 let melodySynth: Tone.PolySynth | null = null;
 let padSynth: Tone.PolySynth | null = null;
 let reverb: Tone.Reverb | null = null;
@@ -10,6 +11,7 @@ let filter: Tone.Filter | null = null;
 
 let currentConfig: MucoThemeMusic | null = null;
 let noteIndex = 0;
+let masterVolume = 0.7; // 0-1 range
 
 export async function initAudio(): Promise<void> {
   if (isInitialized) return;
@@ -35,6 +37,20 @@ export async function initAudio(): Promise<void> {
     },
   }).toDestination();
   clickSynth.volume.value = -20;
+
+  // Backspace synth - lower, softer tone
+  backspaceSynth = new Tone.MembraneSynth({
+    pitchDecay: 0.02,
+    octaves: 1,
+    oscillator: { type: 'sine' },
+    envelope: {
+      attack: 0.001,
+      decay: 0.15,
+      sustain: 0,
+      release: 0.15,
+    },
+  }).toDestination();
+  backspaceSynth.volume.value = -24;
 
   // Melody synth for patterns
   melodySynth = new Tone.PolySynth(Tone.Synth, {
@@ -96,6 +112,14 @@ export function playKeystroke(): void {
   clickSynth.triggerAttackRelease(pitch, '32n');
 }
 
+export function playBackspace(): void {
+  if (!backspaceSynth || !isInitialized) return;
+
+  const pitches = ['F1', 'G1', 'A1'];
+  const pitch = pitches[Math.floor(Math.random() * pitches.length)];
+  backspaceSynth.triggerAttackRelease(pitch, '32n');
+}
+
 export function playMelodyNote(): void {
   if (!melodySynth || !currentConfig || !isInitialized) return;
 
@@ -153,4 +177,14 @@ export function stopAll(): void {
 
 export function isAudioInitialized(): boolean {
   return isInitialized;
+}
+
+export function setVolume(volume: number): void {
+  masterVolume = Math.max(0, Math.min(1, volume));
+  const dbValue = masterVolume === 0 ? -Infinity : Tone.gainToDb(masterVolume);
+  Tone.getDestination().volume.value = dbValue;
+}
+
+export function getVolume(): number {
+  return masterVolume;
 }

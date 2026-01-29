@@ -8,7 +8,7 @@ import { vim } from '@replit/codemirror-vim';
 import { themeRegistry, getTheme, getDefaultTheme, type MucoTheme } from './themes/index';
 import { languageRegistry, getLanguage, detectPattern, type MucoLanguage } from './languages/index';
 import { getPreset } from './presets/index';
-import { initAudio, setMusicConfig, playKeystroke, playMelodyNote, playPatternSound, isAudioInitialized } from './music';
+import { initAudio, setMusicConfig, playKeystroke, playBackspace, playMelodyNote, playPatternSound, isAudioInitialized, setVolume, getVolume } from './music';
 
 let editorView: EditorView | null = null;
 let currentTheme: MucoTheme;
@@ -56,8 +56,8 @@ export async function initEditor(container: HTMLElement): Promise<EditorView> {
         }
       }),
       EditorView.domEventHandlers({
-        keydown: () => {
-          handleKeystroke();
+        keydown: (event: KeyboardEvent) => {
+          handleKeystroke(event.key === 'Backspace' || event.key === 'Delete');
         },
       }),
     ],
@@ -84,7 +84,7 @@ function applyThemeColors(theme: MucoTheme): void {
   root.style.setProperty('--border', theme.colors.border);
 }
 
-async function handleKeystroke(): Promise<void> {
+async function handleKeystroke(isBackspace: boolean = false): Promise<void> {
   if (!isAudioInitialized()) {
     await initAudio();
     setMusicConfig(currentTheme.music);
@@ -96,12 +96,16 @@ async function handleKeystroke(): Promise<void> {
     }
   }
 
-  playKeystroke();
-  keystrokeCount++;
+  if (isBackspace) {
+    playBackspace();
+  } else {
+    playKeystroke();
+    keystrokeCount++;
 
-  // Play melody note every few keystrokes
-  if (keystrokeCount % 3 === 0) {
-    playMelodyNote();
+    // Play melody note every few keystrokes
+    if (keystrokeCount % 3 === 0) {
+      playMelodyNote();
+    }
   }
 }
 
@@ -190,4 +194,4 @@ export function getCurrentLanguage(): MucoLanguage {
   return currentLanguage;
 }
 
-export { themeRegistry, languageRegistry };
+export { themeRegistry, languageRegistry, setVolume, getVolume };

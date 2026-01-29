@@ -29,17 +29,26 @@
 
   #editor-container :global(.cm-scroller) {
     overflow: auto;
-    padding: 1rem;
+    padding: 1.5rem 2rem;
   }
 
   #editor-container :global(.cm-gutters) {
-    padding-right: 0.5rem;
+    padding-right: 1rem;
+    margin-right: 0.5rem;
   }
 
   #editor-container :global(.cm-lineNumbers .cm-gutterElement) {
-    padding: 0 0.5rem;
+    padding: 0 0.75rem;
     min-width: 2.5rem;
     text-align: right;
+  }
+
+  #editor-container :global(.cm-content) {
+    padding: 0.5rem 0;
+  }
+
+  #editor-container :global(.cm-line) {
+    padding-left: 0.5rem;
   }
 
   #editor-container :global(.cm-focused) {
