@@ -1,6 +1,6 @@
 import type { Extension } from '@codemirror/state';
 
-export interface MucoThemeColors {
+export interface McThemeColors {
   bgPrimary: string;
   bgSecondary: string;
   textPrimary: string;
@@ -9,7 +9,7 @@ export interface MucoThemeColors {
   border: string;
 }
 
-export interface MucoThemeMusic {
+export interface McThemeMusic {
   scale: string[];
   attack: number;
   release: number;
@@ -17,27 +17,27 @@ export interface MucoThemeMusic {
   filter: number;
 }
 
-export interface MucoTheme {
+export interface McTheme {
   id: string;
   name: string;
   group: string;
   editor: Extension;
-  music: MucoThemeMusic;
-  colors: MucoThemeColors;
+  music: McThemeMusic;
+  colors: McThemeColors;
 }
 
-export const themeRegistry: MucoTheme[] = [];
+export const themeRegistry: McTheme[] = [];
 
-export function registerTheme(theme: MucoTheme): void {
+export function registerTheme(theme: McTheme): void {
   themeRegistry.push(theme);
 }
 
-export function getTheme(id: string): MucoTheme | undefined {
+export function getTheme(id: string): McTheme | undefined {
   return themeRegistry.find(t => t.id === id);
 }
 
-export function getThemesByGroup(): Map<string, MucoTheme[]> {
-  const groups = new Map<string, MucoTheme[]>();
+export function getThemesByGroup(): Map<string, McTheme[]> {
+  const groups = new Map<string, McTheme[]>();
   for (const theme of themeRegistry) {
     const existing = groups.get(theme.group) || [];
     existing.push(theme);
@@ -46,7 +46,7 @@ export function getThemesByGroup(): Map<string, MucoTheme[]> {
   return groups;
 }
 
-export function getDefaultTheme(isDark: boolean): MucoTheme {
+export function getDefaultTheme(isDark: boolean): McTheme {
   const defaultId = isDark ? 'midnight' : 'dawn';
   return getTheme(defaultId) || themeRegistry[0];
 }

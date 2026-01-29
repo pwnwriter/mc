@@ -1,7 +1,7 @@
-import type { MucoLanguage } from '.';
+import type { McLanguage } from '.';
 
 
-export const nixLanguage: MucoLanguage = {
+export const nixLanguage: McLanguage = {
   id: 'nix',
   name: 'Nix',
   syntax: async () => {

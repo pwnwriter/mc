@@ -1,6 +1,6 @@
-import type { MucoLanguage } from './index';
+import type { McLanguage } from './index';
 
-export const rustLanguage: MucoLanguage = {
+export const rustLanguage: McLanguage = {
   id: 'rust',
   name: 'Rust',
   syntax: async () => {

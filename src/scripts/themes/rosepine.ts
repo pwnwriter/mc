@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
-import type { MucoTheme } from './index';
+import type { McTheme } from './index';
 
 // Rosé Pine (Main)
 const main = {
@@ -46,7 +46,7 @@ const mainHighlight = HighlightStyle.define([
   { tag: tags.punctuation, color: main.fgMuted },
 ]);
 
-export const rosePineTheme: MucoTheme = {
+export const rosePineTheme: McTheme = {
   id: 'rosepine',
   name: 'Rosé Pine',
   group: 'Rosé Pine',
@@ -111,7 +111,7 @@ const moonHighlight = HighlightStyle.define([
   { tag: tags.punctuation, color: moon.fgMuted },
 ]);
 
-export const rosePineMoonTheme: MucoTheme = {
+export const rosePineMoonTheme: McTheme = {
   id: 'rosepine-moon',
   name: 'Moon',
   group: 'Rosé Pine',
@@ -176,7 +176,7 @@ const dawnHighlight = HighlightStyle.define([
   { tag: tags.punctuation, color: dawn.fgMuted },
 ]);
 
-export const rosePineDawnTheme: MucoTheme = {
+export const rosePineDawnTheme: McTheme = {
   id: 'rosepine-dawn',
   name: 'Dawn',
   group: 'Rosé Pine',

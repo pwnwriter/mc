@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
-import type { MucoTheme } from './index';
+import type { McTheme } from './index';
 
 // Latte (Light)
 const latte = {
@@ -46,7 +46,7 @@ const latteHighlight = HighlightStyle.define([
   { tag: tags.punctuation, color: latte.fgMuted },
 ]);
 
-export const catppuccinLatteTheme: MucoTheme = {
+export const catppuccinLatteTheme: McTheme = {
   id: 'catppuccin-latte',
   name: 'Latte',
   group: 'Catppuccin',
@@ -111,7 +111,7 @@ const frappeHighlight = HighlightStyle.define([
   { tag: tags.punctuation, color: frappe.fgMuted },
 ]);
 
-export const catppuccinFrappeTheme: MucoTheme = {
+export const catppuccinFrappeTheme: McTheme = {
   id: 'catppuccin-frappe',
   name: 'Frappé',
   group: 'Catppuccin',
@@ -176,7 +176,7 @@ const macchiatoHighlight = HighlightStyle.define([
   { tag: tags.punctuation, color: macchiato.fgMuted },
 ]);
 
-export const catppuccinMacchiatoTheme: MucoTheme = {
+export const catppuccinMacchiatoTheme: McTheme = {
   id: 'catppuccin-macchiato',
   name: 'Macchiato',
   group: 'Catppuccin',
@@ -241,7 +241,7 @@ const mochaHighlight = HighlightStyle.define([
   { tag: tags.punctuation, color: mocha.fgMuted },
 ]);
 
-export const catppuccinMochaTheme: MucoTheme = {
+export const catppuccinMochaTheme: McTheme = {
   id: 'catppuccin-mocha',
   name: 'Mocha',
   group: 'Catppuccin',

@@ -5,14 +5,14 @@ import { bracketMatching, indentOnInput, foldGutter, foldKeymap } from '@codemir
 import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete';
 import { vim, Vim } from '@replit/codemirror-vim';
 
-import { themeRegistry, getTheme, getDefaultTheme, type MucoTheme } from './themes/index';
-import { languageRegistry, getLanguage, detectPattern, type MucoLanguage } from './languages/index';
+import { themeRegistry, getTheme, getDefaultTheme, type McTheme } from './themes/index';
+import { languageRegistry, getLanguage, detectPattern, type McLanguage } from './languages/index';
 import { getPreset } from './presets/index';
-import { initAudio, setMusicConfig, playKeystroke, playBackspace, playMelodyNote, playPatternSound, isAudioInitialized, setVolume, getVolume } from './music';
+import { initAudio, setMusicConfig, playKeySound, playBackspace, playMelodyNote, playPatternSound, isAudioInitialized, setVolume, getVolume } from './music';
 
 let editorView: EditorView | null = null;
-let currentTheme: MucoTheme;
-let currentLanguage: MucoLanguage;
+let currentTheme: McTheme;
+let currentLanguage: McLanguage;
 let vimEnabled = false;
 
 const themeCompartment = new Compartment();
@@ -69,7 +69,7 @@ export async function initEditor(container: HTMLElement): Promise<EditorView> {
       }),
       EditorView.domEventHandlers({
         keydown: (event: KeyboardEvent) => {
-          handleKeystroke(event.key === 'Backspace' || event.key === 'Delete');
+          handleKeystroke(event.key);
 
           // Enable vim mode with Ctrl + [
           if (!vimEnabled && event.key === '[' && event.ctrlKey) {
@@ -100,7 +100,7 @@ export async function initEditor(container: HTMLElement): Promise<EditorView> {
   return editorView;
 }
 
-function applyThemeColors(theme: MucoTheme): void {
+function applyThemeColors(theme: McTheme): void {
   const root = document.documentElement;
   root.style.setProperty('--bg-primary', theme.colors.bgPrimary);
   root.style.setProperty('--bg-secondary', theme.colors.bgSecondary);
@@ -110,7 +110,7 @@ function applyThemeColors(theme: MucoTheme): void {
   root.style.setProperty('--border', theme.colors.border);
 }
 
-async function handleKeystroke(isBackspace: boolean = false): Promise<void> {
+async function handleKeystroke(key: string): Promise<void> {
   if (!isAudioInitialized()) {
     await initAudio();
     setMusicConfig(currentTheme.music);
@@ -122,10 +122,12 @@ async function handleKeystroke(isBackspace: boolean = false): Promise<void> {
     }
   }
 
+  const isBackspace = key === 'Backspace' || key === 'Delete';
+
   if (isBackspace) {
     playBackspace();
   } else {
-    playKeystroke();
+    playKeySound(key);
     keystrokeCount++;
 
     // Play melody note every few keystrokes
@@ -237,11 +239,11 @@ export function getEditor(): EditorView | null {
   return editorView;
 }
 
-export function getCurrentTheme(): MucoTheme {
+export function getCurrentTheme(): McTheme {
   return currentTheme;
 }
 
-export function getCurrentLanguage(): MucoLanguage {
+export function getCurrentLanguage(): McLanguage {
   return currentLanguage;
 }
 

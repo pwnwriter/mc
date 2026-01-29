@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
-import type { MucoTheme } from './index';
+import type { McTheme } from './index';
 
 const colors = {
   bg: '#faf4ed',
@@ -62,10 +62,10 @@ const highlightStyle = HighlightStyle.define([
   { tag: tags.punctuation, color: colors.fgMuted },
 ]);
 
-export const dawnTheme: MucoTheme = {
+export const dawnTheme: McTheme = {
   id: 'dawn',
   name: 'Dawn',
-  group: 'Muco',
+  group: 'Mc',
   editor: [editorTheme, syntaxHighlighting(highlightStyle)],
   music: {
     scale: ['D4', 'E4', 'F#4', 'A4', 'B4', 'D5', 'E5', 'F#5'],

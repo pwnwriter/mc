@@ -1,6 +1,6 @@
-import type { MucoLanguage } from './index';
+import type { McLanguage } from './index';
 
-export const javascriptLanguage: MucoLanguage = {
+export const javascriptLanguage: McLanguage = {
   id: 'javascript',
   name: 'JavaScript',
   syntax: async () => {

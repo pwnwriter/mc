@@ -1,6 +1,6 @@
 import type { Extension } from '@codemirror/state';
 
-export interface MucoLanguagePatterns {
+export interface McLanguagePatterns {
   function: RegExp;
   loop: RegExp;
   conditional: RegExp;
@@ -8,24 +8,24 @@ export interface MucoLanguagePatterns {
   comment: RegExp;
 }
 
-export interface MucoLanguage {
+export interface McLanguage {
   id: string;
   name: string;
   syntax: () => Promise<Extension>;
-  patterns: MucoLanguagePatterns;
+  patterns: McLanguagePatterns;
 }
 
-export const languageRegistry: MucoLanguage[] = [];
+export const languageRegistry: McLanguage[] = [];
 
-export function registerLanguage(language: MucoLanguage): void {
+export function registerLanguage(language: McLanguage): void {
   languageRegistry.push(language);
 }
 
-export function getLanguage(id: string): MucoLanguage | undefined {
+export function getLanguage(id: string): McLanguage | undefined {
   return languageRegistry.find(l => l.id === id);
 }
 
-export function detectPattern(code: string, language: MucoLanguage): {
+export function detectPattern(code: string, language: McLanguage): {
   hasFunction: boolean;
   hasLoop: boolean;
   hasConditional: boolean;

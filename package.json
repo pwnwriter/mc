@@ -11,7 +11,7 @@
     "codemirror": "^6.0.2",
     "tone": "^15.1.22"
   },
-  "name": "muco",
+  "name": "mc",
   "type": "module",
   "private": true,
   "scripts": {

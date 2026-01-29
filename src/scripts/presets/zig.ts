@@ -4,6 +4,6 @@ export const zigPreset = `// Welcome to MC - where code becomes music
 const std = @import("std");
 
 pub fn main() void {
-    std.debug.print("Hello, Muco!\\n", .{});
+    std.debug.print("Hello, mc!\\n", .{});
 }
 `;

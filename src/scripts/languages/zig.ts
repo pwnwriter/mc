@@ -1,6 +1,6 @@
-import type { MucoLanguage } from './index';
+import type { McLanguage } from './index';
 
-export const zigLanguage: MucoLanguage = {
+export const zigLanguage: McLanguage = {
   id: 'zig',
   name: 'Zig',
   syntax: async () => {
