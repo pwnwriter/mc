@@ -1,4 +1,4 @@
-export const javascriptPreset = `// Welcome to Muco - where code becomes music
+export const javascriptPreset = `// Welcome to MC - where code becomes music
 // Start typing to hear your code come alive
 
 function main() {

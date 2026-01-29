@@ -46,8 +46,10 @@ import { javascriptLanguage } from './javascript';
 import { pythonLanguage } from './python';
 import { rustLanguage } from './rust';
 import { zigLanguage } from './zig';
+import { nixLanguage } from './nix';
 
 registerLanguage(javascriptLanguage);
 registerLanguage(pythonLanguage);
 registerLanguage(rustLanguage);
 registerLanguage(zigLanguage);
+registerLanguage(nixLanguage);

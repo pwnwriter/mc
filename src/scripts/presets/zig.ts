@@ -1,4 +1,4 @@
-export const zigPreset = `// Welcome to Muco - where code becomes music
+export const zigPreset = `// Welcome to MC - where code becomes music
 // Start typing to hear your code come alive
 
 const std = @import("std");
