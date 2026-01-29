@@ -47,7 +47,7 @@ export function getThemesByGroup(): Map<string, McTheme[]> {
 }
 
 export function getDefaultTheme(isDark: boolean): McTheme {
-  const defaultId = isDark ? "midnight" : "dawn";
+  const defaultId = isDark ? "rosepine" : "dawn";
   return getTheme(defaultId) || themeRegistry[0];
 }
 
