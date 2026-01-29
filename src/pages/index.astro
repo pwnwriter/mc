@@ -22,12 +22,30 @@ import '../styles/global.css';
           <span class="logo-text">muco</span>
           <span class="logo-tagline">code → music</span>
         </div>
-        <button id="settings-toggle" class="settings-button" aria-label="Toggle settings">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-        </button>
+        <div class="header-actions">
+          <div id="audio-indicator" class="audio-indicator" title="Audio inactive - start typing to activate">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15" class="audio-muted"></line>
+              <line x1="17" y1="9" x2="23" y2="15" class="audio-muted"></line>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" class="audio-wave audio-wave-1"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" class="audio-wave audio-wave-2"></path>
+            </svg>
+          </div>
+          <button id="about-toggle" class="icon-button" aria-label="About">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 16v-4"></path>
+              <path d="M12 8h.01"></path>
+            </svg>
+          </button>
+          <button id="settings-toggle" class="icon-button" aria-label="Toggle settings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
+        </div>
       </header>
 
       <main class="editor-wrapper">
@@ -70,8 +88,50 @@ import '../styles/global.css';
 
         <div class="settings-footer">
           <p class="hint">Start typing to hear your code come alive</p>
+          <div class="developer-credit">
+            <a href="https://github.com/pwnwriter" target="_blank" rel="noopener noreferrer" class="dev-link">
+              <img src="https://github.com/pwnwriter.png" alt="pwnwriter" class="dev-avatar" />
+              <span>by pwnwriter</span>
+            </a>
+          </div>
         </div>
       </aside>
+
+      <div id="about-modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+          <button id="about-close" class="close-button" aria-label="Close about">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <div class="about-header">
+            <img src="https://github.com/pwnwriter.png" alt="pwnwriter" class="about-avatar" />
+            <div class="about-info">
+              <h2>Nabeen</h2>
+              <p class="about-handle">@pwnwriter</p>
+            </div>
+          </div>
+          <p class="about-desc">A digital workbench where code becomes music. Built with love for creative coding.</p>
+          <div class="about-links">
+            <a href="https://pwnwriter.me" target="_blank" rel="noopener noreferrer" class="about-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              pwnwriter.me
+            </a>
+            <a href="https://github.com/pwnwriter" target="_blank" rel="noopener noreferrer" class="about-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+              </svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
@@ -89,6 +149,24 @@ import '../styles/global.css';
 
       settingsClose?.addEventListener('click', () => {
         settingsPanel?.classList.add('hidden');
+      });
+
+      // About modal toggle
+      const aboutToggle = document.getElementById('about-toggle');
+      const aboutModal = document.getElementById('about-modal');
+      const aboutClose = document.getElementById('about-close');
+      const modalBackdrop = aboutModal?.querySelector('.modal-backdrop');
+
+      aboutToggle?.addEventListener('click', () => {
+        aboutModal?.classList.remove('hidden');
+      });
+
+      aboutClose?.addEventListener('click', () => {
+        aboutModal?.classList.add('hidden');
+      });
+
+      modalBackdrop?.addEventListener('click', () => {
+        aboutModal?.classList.add('hidden');
       });
 
       // Theme select
@@ -141,10 +219,14 @@ import '../styles/global.css';
         });
       }
 
-      // Close settings on escape
+      // Close panels on escape
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !settingsPanel?.classList.contains('hidden')) {
-          settingsPanel?.classList.add('hidden');
+        if (e.key === 'Escape') {
+          if (!aboutModal?.classList.contains('hidden')) {
+            aboutModal?.classList.add('hidden');
+          } else if (!settingsPanel?.classList.contains('hidden')) {
+            settingsPanel?.classList.add('hidden');
+          }
         }
       });
     </script>

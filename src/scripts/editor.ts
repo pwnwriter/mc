@@ -88,6 +88,12 @@ async function handleKeystroke(): Promise<void> {
   if (!isAudioInitialized()) {
     await initAudio();
     setMusicConfig(currentTheme.music);
+    // Update audio indicator
+    const indicator = document.getElementById('audio-indicator');
+    if (indicator) {
+      indicator.classList.add('active');
+      indicator.title = 'Audio active';
+    }
   }
 
   playKeystroke();

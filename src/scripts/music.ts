@@ -14,7 +14,9 @@ let noteIndex = 0;
 export async function initAudio(): Promise<void> {
   if (isInitialized) return;
 
-  await Tone.start();
+  try {
+    await Tone.start();
+    console.log('Audio context started');
 
   // Create effects chain
   reverb = new Tone.Reverb({ decay: 3, wet: 0.5 }).toDestination();
@@ -59,6 +61,10 @@ export async function initAudio(): Promise<void> {
   padSynth.volume.value = -18;
 
   isInitialized = true;
+    console.log('Audio initialized successfully');
+  } catch (error) {
+    console.error('Failed to initialize audio:', error);
+  }
 }
 
 export function setMusicConfig(config: MucoThemeMusic): void {
