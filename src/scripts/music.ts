@@ -381,3 +381,54 @@ export function setVolume(volume: number): void {
 export function getVolume(): number {
   return masterVolume;
 }
+
+export async function playCode(
+  code: string,
+  patterns: {
+    hasFunction: boolean;
+    hasLoop: boolean;
+    hasConditional: boolean;
+    hasString: boolean;
+    hasComment: boolean;
+  },
+): Promise<void> {
+  if (!isInitialized) {
+    await initAudio();
+  }
+
+  if (!currentConfig || !melodySynth || !padSynth) return;
+
+  const now = Tone.now();
+  const lines = code.split("\n").filter((l) => l.trim().length > 0);
+  const scale = currentConfig.scale;
+
+  // Play a melody based on code structure
+  let time = now;
+  const noteDelay = 0.15;
+
+  // Play melody notes for each non-empty line (up to 16 notes)
+  const maxNotes = Math.min(lines.length, 16);
+  for (let i = 0; i < maxNotes; i++) {
+    const note = scale[i % scale.length];
+    melodySynth.triggerAttackRelease(note, "16n", time);
+    time += noteDelay;
+  }
+
+  // Play pattern chords after the melody
+  const chordTime = time + 0.2;
+
+  if (patterns.hasFunction) {
+    const chord = [scale[0], scale[2], scale[4]];
+    padSynth.triggerAttackRelease(chord, "2n", chordTime);
+  }
+
+  if (patterns.hasLoop) {
+    const chord = [scale[0], scale[3], scale[4]];
+    padSynth.triggerAttackRelease(chord, "2n", chordTime + 0.5);
+  }
+
+  if (patterns.hasConditional) {
+    const chord = [scale[0], scale[2], scale[5]];
+    padSynth.triggerAttackRelease(chord, "2n", chordTime + 1);
+  }
+}

@@ -152,6 +152,22 @@ body {
   background-color: var(--bg-primary);
 }
 
+.icon-button.playing {
+  color: var(--accent);
+  border-color: var(--accent);
+  animation: playPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes playPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
 /* Editor Wrapper */
 .editor-wrapper {
   flex: 1;

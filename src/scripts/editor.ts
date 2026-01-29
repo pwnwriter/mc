@@ -36,6 +36,7 @@ import {
   playBackspace,
   playMelodyNote,
   playPatternSound,
+  playCode,
   isAudioInitialized,
   setVolume,
   getVolume,
@@ -351,6 +352,24 @@ function setupVimModeListener(): void {
     if (!vimEnabled) return;
     updateStatuslineMode(e.mode);
   });
+}
+
+export async function playCurrentCode(): Promise<void> {
+  if (!editorView) return;
+
+  if (!isAudioInitialized()) {
+    await initAudio();
+    setMusicConfig(currentTheme.music);
+    const indicator = document.getElementById("audio-indicator");
+    if (indicator) {
+      indicator.classList.add("active");
+      indicator.title = "Audio active";
+    }
+  }
+
+  const code = editorView.state.doc.toString();
+  const patterns = detectPattern(code, currentLanguage);
+  await playCode(code, patterns);
 }
 
 export { themeRegistry, languageRegistry, setVolume, getVolume };
