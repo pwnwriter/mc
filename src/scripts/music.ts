@@ -16,13 +16,19 @@ let stabSynth: Tone.PolySynth | null = null;
 let pluckSynth: Tone.PluckSynth | null = null;
 let noiseSynth: Tone.NoiseSynth | null = null;
 
+// Effects for punch
+let compressor: Tone.Compressor | null = null;
+let distortion: Tone.Distortion | null = null;
+let snareSynth: Tone.NoiseSynth | null = null;
+let clapSynth: Tone.NoiseSynth | null = null;
+
 let currentConfig: McThemeMusic | null = null;
 let noteIndex = 0;
 let masterVolume = 0.7; // 0-1 range
 
 // Patatap-style key mapping
 interface KeySoundConfig {
-  type: "bass" | "hihat" | "stab" | "pluck" | "noise";
+  type: "bass" | "hihat" | "stab" | "pluck" | "noise" | "snare" | "clap";
   note?: string;
   frequency?: number;
   duration?: string;
@@ -70,16 +76,16 @@ const keyMap: Record<string, KeySoundConfig> = {
   ".": { type: "pluck", note: "D5" },
   "/": { type: "pluck", note: "E5" },
 
-  // Numbers - Special sounds
-  "1": { type: "noise", duration: "32n" },
-  "2": { type: "noise", duration: "16n" },
-  "3": { type: "noise", duration: "8n" },
-  "4": { type: "stab", note: "C2" },
-  "5": { type: "stab", note: "E2" },
-  "6": { type: "stab", note: "G2" },
-  "7": { type: "bass", note: "C2" },
-  "8": { type: "bass", note: "E2" },
-  "9": { type: "bass", note: "G2" },
+  // Numbers - Drums and special sounds
+  "1": { type: "snare" },
+  "2": { type: "snare" },
+  "3": { type: "clap" },
+  "4": { type: "clap" },
+  "5": { type: "bass", note: "C1" },
+  "6": { type: "bass", note: "D1" },
+  "7": { type: "bass", note: "E1" },
+  "8": { type: "bass", note: "F1" },
+  "9": { type: "bass", note: "G1" },
   "0": { type: "hihat", frequency: 600 },
 
   // Common punctuation
@@ -97,126 +103,166 @@ export async function initAudio(): Promise<void> {
     await Tone.start();
     console.log("Audio context started");
 
-    // Create effects chain
-    reverb = new Tone.Reverb({ decay: 3, wet: 0.5 }).toDestination();
-    filter = new Tone.Filter({ frequency: 2000, type: "lowpass" }).connect(
-      reverb,
+    // Punchy effects chain - compression for that rap/trap punch
+    compressor = new Tone.Compressor({
+      threshold: -24,
+      ratio: 4,
+      attack: 0.003,
+      release: 0.25,
+    }).toDestination();
+
+    // Light distortion for grit
+    distortion = new Tone.Distortion({
+      distortion: 0.2,
+      wet: 0.3,
+    }).connect(compressor);
+
+    // Minimal reverb - keep it dry and punchy
+    reverb = new Tone.Reverb({ decay: 0.5, wet: 0.1 }).connect(compressor);
+
+    // Filter for synths
+    filter = new Tone.Filter({ frequency: 4000, type: "lowpass" }).connect(
+      distortion,
     );
 
-    // Keystroke click synth
+    // Keystroke click synth - punchy tick
     clickSynth = new Tone.MembraneSynth({
-      pitchDecay: 0.01,
-      octaves: 2,
-      oscillator: { type: "sine" },
-      envelope: {
-        attack: 0.001,
-        decay: 0.1,
-        sustain: 0,
-        release: 0.1,
-      },
-    }).toDestination();
-    clickSynth.volume.value = -20;
-
-    // Backspace synth - lower, softer tone
-    backspaceSynth = new Tone.MembraneSynth({
-      pitchDecay: 0.02,
-      octaves: 1,
-      oscillator: { type: "sine" },
-      envelope: {
-        attack: 0.001,
-        decay: 0.15,
-        sustain: 0,
-        release: 0.15,
-      },
-    }).toDestination();
-    backspaceSynth.volume.value = -24;
-
-    // Melody synth for patterns
-    melodySynth = new Tone.PolySynth(Tone.Synth, {
-      oscillator: { type: "triangle" },
-      envelope: {
-        attack: 0.02,
-        decay: 0.3,
-        sustain: 0.2,
-        release: 0.8,
-      },
-    }).connect(filter);
-    melodySynth.volume.value = -12;
-
-    // Pad synth for sustained harmony
-    padSynth = new Tone.PolySynth(Tone.Synth, {
-      oscillator: { type: "sine" },
-      envelope: {
-        attack: 0.5,
-        decay: 0.5,
-        sustain: 0.8,
-        release: 2,
-      },
-    }).connect(filter);
-    padSynth.volume.value = -18;
-
-    // Patatap-style synths (punchy, immediate sounds)
-
-    // Bass synth for left home row - deep kicks
-    bassSynth = new Tone.MembraneSynth({
-      pitchDecay: 0.05,
+      pitchDecay: 0.008,
       octaves: 4,
       oscillator: { type: "sine" },
       envelope: {
         attack: 0.001,
-        decay: 0.2,
+        decay: 0.05,
         sustain: 0,
-        release: 0.2,
+        release: 0.02,
       },
-    }).toDestination();
-    bassSynth.volume.value = -10;
+    }).connect(compressor);
+    clickSynth.volume.value = -12;
 
-    // Hi-hat synth for right home row - metallic
-    hihatSynth = new Tone.MetalSynth({
-      frequency: 200,
+    // Backspace synth - low thud
+    backspaceSynth = new Tone.MembraneSynth({
+      pitchDecay: 0.05,
+      octaves: 6,
+      oscillator: { type: "sine" },
       envelope: {
         attack: 0.001,
         decay: 0.1,
+        sustain: 0,
+        release: 0.05,
+      },
+    }).connect(compressor);
+    backspaceSynth.volume.value = -10;
+
+    // Melody synth - sharper, more aggressive
+    melodySynth = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: "sawtooth" },
+      envelope: {
+        attack: 0.005,
+        decay: 0.1,
+        sustain: 0.1,
+        release: 0.2,
+      },
+    }).connect(filter);
+    melodySynth.volume.value = -8;
+
+    // Pad synth - shorter, punchier chords
+    padSynth = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: "square" },
+      envelope: {
+        attack: 0.01,
+        decay: 0.2,
+        sustain: 0.3,
+        release: 0.3,
+      },
+    }).connect(filter);
+    padSynth.volume.value = -10;
+
+    // === PATATAP-STYLE PUNCHY SYNTHS ===
+
+    // 808 KICK - deep sub bass that hits HARD
+    bassSynth = new Tone.MembraneSynth({
+      pitchDecay: 0.08,
+      octaves: 8,
+      oscillator: { type: "sine" },
+      envelope: {
+        attack: 0.001,
+        decay: 0.4,
+        sustain: 0.01,
+        release: 0.4,
+      },
+    }).connect(compressor);
+    bassSynth.volume.value = -2;
+
+    // HI-HAT - crispy, tight
+    hihatSynth = new Tone.MetalSynth({
+      frequency: 300,
+      envelope: {
+        attack: 0.001,
+        decay: 0.05,
         release: 0.01,
       },
       harmonicity: 5.1,
-      modulationIndex: 32,
-      resonance: 4000,
-      octaves: 1.5,
-    }).toDestination();
-    hihatSynth.volume.value = -18;
+      modulationIndex: 40,
+      resonance: 5000,
+      octaves: 1,
+    }).connect(compressor);
+    hihatSynth.volume.value = -12;
 
-    // Stab synth for top row - short, punchy
+    // STAB synth - aggressive, instant
     stabSynth = new Tone.PolySynth(Tone.Synth, {
       oscillator: { type: "square" },
       envelope: {
-        attack: 0.005,
-        decay: 0.1,
+        attack: 0.001,
+        decay: 0.08,
         sustain: 0,
-        release: 0.1,
+        release: 0.05,
       },
-    }).toDestination();
-    stabSynth.volume.value = -14;
+    }).connect(distortion);
+    stabSynth.volume.value = -6;
 
-    // Pluck synth for bottom row
+    // PLUCK - snappy
     pluckSynth = new Tone.PluckSynth({
-      attackNoise: 1,
-      dampening: 4000,
-      resonance: 0.9,
-    }).toDestination();
-    pluckSynth.volume.value = -12;
+      attackNoise: 4,
+      dampening: 2000,
+      resonance: 0.95,
+    }).connect(compressor);
+    pluckSynth.volume.value = -6;
 
-    // Noise synth for special effects
+    // NOISE - for texture
     noiseSynth = new Tone.NoiseSynth({
       noise: { type: "white" },
       envelope: {
-        attack: 0.005,
-        decay: 0.1,
+        attack: 0.001,
+        decay: 0.05,
+        sustain: 0,
+        release: 0.02,
+      },
+    }).connect(compressor);
+    noiseSynth.volume.value = -14;
+
+    // SNARE - punchy trap snare
+    snareSynth = new Tone.NoiseSynth({
+      noise: { type: "pink" },
+      envelope: {
+        attack: 0.001,
+        decay: 0.15,
         sustain: 0,
         release: 0.1,
       },
-    }).toDestination();
-    noiseSynth.volume.value = -20;
+    }).connect(compressor);
+    snareSynth.volume.value = -6;
+
+    // CLAP - layered clap sound
+    clapSynth = new Tone.NoiseSynth({
+      noise: { type: "white" },
+      envelope: {
+        attack: 0.001,
+        decay: 0.1,
+        sustain: 0,
+        release: 0.08,
+      },
+    }).connect(compressor);
+    clapSynth.volume.value = -8;
 
     isInitialized = true;
     console.log("Audio initialized successfully");
@@ -308,6 +354,18 @@ export function playKeySound(key: string): void {
     case "noise":
       if (noiseSynth) {
         noiseSynth.triggerAttackRelease(config.duration || "32n");
+      }
+      break;
+
+    case "snare":
+      if (snareSynth) {
+        snareSynth.triggerAttackRelease("16n");
+      }
+      break;
+
+    case "clap":
+      if (clapSynth) {
+        clapSynth.triggerAttackRelease("16n");
       }
       break;
   }
