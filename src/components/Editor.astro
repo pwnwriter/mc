@@ -1,5 +1,19 @@
 ---
 // Editor component - CodeMirror container with neovim-style buffer bar and statusline
+import { execSync } from 'child_process';
+
+let commitHash = '';
+let commitMessage = '';
+
+try {
+  commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
+  commitMessage = execSync('git log -1 --format=%s', { encoding: 'utf-8' }).trim();
+} catch {
+  commitHash = '';
+  commitMessage = 'mc';
+}
+
+const commitUrl = commitHash ? `https://github.com/pwnwriter/mc/commit/${commitHash}` : '#';
 ---
 
 <div class="editor-container-wrapper">
@@ -18,8 +32,9 @@
       <span id="statusline-mode" class="statusline-mode mode-normal">NORMAL</span>
     </div>
     <div class="statusline-center">
-      <span class="statusline-icon"></span>
-      <span id="statusline-file">main.js</span>
+      <a href={commitUrl} target="_blank" rel="noopener noreferrer" class="statusline-commit" title={`View commit: ${commitHash}`}>
+        {commitMessage}
+      </a>
     </div>
     <div class="statusline-right">
       <span id="statusline-position" class="statusline-position">1:1</span>
@@ -179,6 +194,21 @@
     justify-content: center;
     gap: 0.375rem;
     color: var(--text-secondary);
+    overflow: hidden;
+  }
+
+  .statusline-commit {
+    color: var(--text-secondary);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+    transition: color 0.2s ease;
+  }
+
+  .statusline-commit:hover {
+    color: var(--accent);
   }
 
   .statusline-right {
