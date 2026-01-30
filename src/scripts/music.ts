@@ -388,21 +388,29 @@ export function playChord(type: "function" | "loop" | "conditional"): void {
   switch (type) {
     case "function":
       // Major chord feel
-      chord = [scale[0], scale[2], scale[4]];
+      chord = [scale[0], scale[2], scale[4]].filter(
+        (n): n is string => n !== undefined,
+      );
       break;
     case "loop":
       // Suspended feel
-      chord = [scale[0], scale[3], scale[4]];
+      chord = [scale[0], scale[3], scale[4]].filter(
+        (n): n is string => n !== undefined,
+      );
       break;
     case "conditional":
       // Minor chord feel
-      chord = [scale[0], scale[2], scale[5]];
+      chord = [scale[0], scale[2], scale[5]].filter(
+        (n): n is string => n !== undefined,
+      );
       break;
     default:
-      chord = [scale[0]];
+      chord = [scale[0]].filter((n): n is string => n !== undefined);
   }
 
-  padSynth.triggerAttackRelease(chord, "2n");
+  if (chord.length > 0) {
+    padSynth.triggerAttackRelease(chord, "2n");
+  }
 }
 
 export function playPatternSound(patterns: {
@@ -468,7 +476,9 @@ export async function playCode(
   const maxNotes = Math.min(lines.length, 16);
   for (let i = 0; i < maxNotes; i++) {
     const note = scale[i % scale.length];
-    melodySynth.triggerAttackRelease(note, "16n", time);
+    if (note) {
+      melodySynth.triggerAttackRelease(note, "16n", time);
+    }
     time += noteDelay;
   }
 
@@ -476,17 +486,29 @@ export async function playCode(
   const chordTime = time + 0.2;
 
   if (patterns.hasFunction) {
-    const chord = [scale[0], scale[2], scale[4]];
-    padSynth.triggerAttackRelease(chord, "2n", chordTime);
+    const chord = [scale[0], scale[2], scale[4]].filter(
+      (n): n is string => n !== undefined,
+    );
+    if (chord.length > 0) {
+      padSynth.triggerAttackRelease(chord, "2n", chordTime);
+    }
   }
 
   if (patterns.hasLoop) {
-    const chord = [scale[0], scale[3], scale[4]];
-    padSynth.triggerAttackRelease(chord, "2n", chordTime + 0.5);
+    const chord = [scale[0], scale[3], scale[4]].filter(
+      (n): n is string => n !== undefined,
+    );
+    if (chord.length > 0) {
+      padSynth.triggerAttackRelease(chord, "2n", chordTime + 0.5);
+    }
   }
 
   if (patterns.hasConditional) {
-    const chord = [scale[0], scale[2], scale[5]];
-    padSynth.triggerAttackRelease(chord, "2n", chordTime + 1);
+    const chord = [scale[0], scale[2], scale[5]].filter(
+      (n): n is string => n !== undefined,
+    );
+    if (chord.length > 0) {
+      padSynth.triggerAttackRelease(chord, "2n", chordTime + 1);
+    }
   }
 }
