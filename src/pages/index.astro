@@ -276,6 +276,16 @@ import '../styles/global.css';
         settingsPanel?.classList.add('hidden');
       });
 
+      // Close settings panel when clicking outside
+      //  https://css-tricks.com/dangers-stopping-event-propagation/
+      document.addEventListener('click', (e) => {
+        const target = e.target as Node;
+        const isOutside = !settingsPanel?.contains(target) && !settingsToggle?.contains(target);
+        if (isOutside && !settingsPanel?.classList.contains('hidden')) {
+          settingsPanel?.classList.add('hidden');
+        }
+      });
+
       // About modal toggle
       const aboutToggle = document.getElementById('about-toggle');
       const aboutModal = document.getElementById('about-modal');
